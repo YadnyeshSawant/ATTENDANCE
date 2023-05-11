@@ -10,7 +10,7 @@ form.addEventListener('submit', function(e) {
 	const present = presentInput.checked;
 
 	// Send attendance data to Google Spreadsheet
-	const url = 'https://script.google.com/macros/s/{YOUR_SCRIPT_ID}/exec'; // Replace {YOUR_SCRIPT_ID} with your Google Script ID
+	const url = 'https://script.google.com/macros/s/{YOUR_https://docs.google.com/spreadsheets/d/1X4ZDpE2lDzULk4EyCgt35ivAdPU1KCdDf3TTrEaDLoc/edit#gid=0SCRIPT_ID}/exec'; // Replace {YOUR_SCRIPT_ID} with your Google Script ID
 	fetch(`${url}?name=${name}&date=${date}&present=${present}`)
 		.then(response => {
 			if (response.ok) {
