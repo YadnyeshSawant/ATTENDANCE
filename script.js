@@ -70,6 +70,9 @@
 // 			alert('Error submitting attendance.');
 // 		});
 // });
+const fs = require('fs');
+const XLSX = require('xlsx');
+
 const form = document.querySelector('form');
 const nameInput = document.querySelector('#name');
 const dateInput = document.querySelector('#date');
@@ -97,9 +100,9 @@ form.addEventListener('submit', function(e) {
 	// Convert the workbook to a binary Excel file
 	const excelFile = XLSX.write(workbook, {bookType: 'xlsx', type: 'binary'});
 
-	// Save the binary Excel file as a local file using FileSaver.js
-	const fileName = `Attendance_${date}.xlsx`;
-	saveAs(new Blob([s2ab(excelFile)], {type: "application/octet-stream"}), fileName);
+	// Save the binary Excel file to a file path using Node.js file system API
+	const filePath = 'Book1.xlsx';
+	fs.writeFileSync(filePath, s2ab(excelFile));
 });
 
 // Convert a string to an ArrayBuffer
@@ -111,5 +114,3 @@ function s2ab(s) {
 	}
 	return buf;
 }
-
-
