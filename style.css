@@ -1,13 +1,20 @@
 body {
 	font-family: Arial, sans-serif;
-	margin: 0;
-	padding: 0;
+	margin: auto;
+	padding: auto;
 }
-
+header img {
+	position: lest;
+	top: 0;
+	left: 0;
+}
 header {
 	background-color: #333;
-	color: #fff;
+	color: #eae9e9;
 	padding: 1em;
+	font-size:larger;
+	text-align: center;
+
 }
 
 nav ul {
@@ -62,11 +69,12 @@ form  {
     text-align: center;
 }
 footer {
+	display: block;
 	background-color: #333;
 	color: #fff;
 	text-align: center;
-	padding: 1em;
+	/* padding: 1em; */
 	position: absolute;
 	bottom: 0;
-	width: 100%;
+	width: 97.5%;
 }
