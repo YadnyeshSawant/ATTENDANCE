@@ -3,12 +3,13 @@ body {
 	margin: auto;
 	padding: auto;
 }
+
 header img {
 	position: lest;
 	top: 0;
 	left: 0;
 }
-header {
+	header {
 	background-color: #333;
 	color: #eae9e9;
 	padding: 1em;
@@ -37,7 +38,8 @@ main {
 	max-width: 800px;
 	margin: 2em auto;
 	padding: 1em;
-	background-color: #f0f0f0;
+	/* background-color: #f0f0f0; */
+	background-color: #e453dd25;
 	border-radius: 5px;
     text-align: center;
 }
