@@ -32,6 +32,7 @@ main {
 	padding: 1em;
 	background-color: #f0f0f0;
 	border-radius: 5px;
+    text-align: center;
 }
 
 form label {
@@ -39,7 +40,7 @@ form label {
 	margin: 0.5em 0;
 }
 
-form input[type="text"], form input[type="date"], form input[type="checkbox"] {
+form input[type="text"], form input[type="date"], form input[type="checkbox"], form input[type="checkbox"]  {
 	padding: 0.5em;
 	border-radius: 5px;
 	border: none;
@@ -57,7 +58,9 @@ form button {
 form button:hover {
 	background-color: #555;
 }
-
+form  {
+    text-align: center;
+}
 footer {
 	background-color: #333;
 	color: #fff;
