@@ -2,36 +2,14 @@ const form = document.querySelector('form');
 const nameInput = document.querySelector('#name');
 const dateInput = document.querySelector('#date');
 const presentInput = document.querySelector('#present');
+const absent = document.querySelector('#present');
+    if(presentInput.checked)
+    {
+        absentInput.disabled = true;
+    }else{
+        absentInput.checked = false;
+    }
 
-form.addEventListener('submit', function(e) {
-	e.preventDefault();
-	const name = nameInput.value;
-	const date = dateInput.value;
-	const present = presentInput.checked;
-
-	// Write attendance data to file using FileSystem API
-	if (window.File && window.FileReader && window.FileSystem) {
-		const fileSystem = window.FileSystem;
-		fileSystem.root.getFile('Book1.xlsx', { create: true }, function(fileEntry) {
-			fileEntry.createWriter(function(fileWriter) {
-				fileWriter.seek(fileWriter.length); // Move cursor to end of file
-				const blob = new Blob([`${name}\t${date}\t${present}\n`], { type: 'text/plain' });
-				fileWriter.write(blob);
-				alert('Attendance recorded successfully');
-			}, errorHandler);
-		}, errorHandler);
-	} else {
-		alert('Filesystem API not supported');
-	}
-});
-//-----------------------------------------------------------
-function errorHandler(error) {
-	alert('An error occurred: ' + error.message);
-}
-const form = document.querySelector('form');
-const nameInput = document.querySelector('#name');
-const dateInput = document.querySelector('#date');
-const presentInput = document.querySelector('#present');
 const downloadLink = document.querySelector('#download-link');
 
 let attendanceData = [];
@@ -41,18 +19,21 @@ form.addEventListener('submit', function(e) {
 	const name = nameInput.value;
 	const date = dateInput.value;
 	const present = presentInput.checked;
+    const absent = absentInput.checked;
 
 	// Add attendance data to array
 	attendanceData.push({
 		Name: name,
 		Date: date,
-		Present: present ? 'Yes' : 'No'
+		Present: present ? 'Yes' : 'No',
+        Absent: absent ? 'yes':'No'
 	});
 
 	// Reset form inputs
 	nameInput.value = '';
 	dateInput.value = '';
 	presentInput.checked = false;
+    absentInput.checked = false;
 });
 
 downloadLink.addEventListener('click', function(e) {
@@ -65,7 +46,7 @@ downloadLink.addEventListener('click', function(e) {
 	const wbout = XLSX.write(workbook, { bookType: 'xlsx', type: 'binary' });
 
 	// Download XLSX file
-	const filename = 'attendance.xlsx';
+	const filename = 'Book1.xlsx';
 	const blob = new Blob([s2ab(wbout)], { type: 'application/octet-stream' });
 	const url = window.URL.createObjectURL(blob);
 	const link = document.createElement('a');
@@ -84,8 +65,37 @@ function s2ab(s) {
 	}
 	return buf;
 }
+// const form = document.querySelector('form');
+// const nameInput = document.querySelector('#name');
+// const dateInput = document.querySelector('#date');
+// const presentInput = document.querySelector('#present');
 
-//--------------------
+// form.addEventListener('submit', function(e) {
+// 	e.preventDefault();
+// 	const name = nameInput.value;
+// 	const date = dateInput.value;
+// 	const present = presentInput.checked;
+
+// 	// Write attendance data to file using FileSystem API
+// 	if (window.File && window.FileReader && window.FileSystem) {
+// 		const fileSystem = window.FileSystem;
+// 		fileSystem.root.getFile('Attendance.xlsx', { create: true }, function(fileEntry) {
+// 			fileEntry.createWriter(function(fileWriter) {
+// 				fileWriter.seek(fileWriter.length); // Move cursor to end of file
+// 				const blob = new Blob([`${name}\t${date}\t${present}\n`], { type: 'text/plain' });
+// 				fileWriter.write(blob);
+// 				alert('Attendance recorded successfully');
+// 			}, errorHandler);
+// 		}, errorHandler);
+// 	} else {
+// 		alert('Filesystem API not supported');
+// 	}
+// });
+
+// function errorHandler(error) {
+// 	alert('An error occurred: ' + error.message);
+// }
+//--------------------------------------------------------------------------------------------
 // const form = document.querySelector('form');
 // const nameInput = document.querySelector('#name');
 // const dateInput = document.querySelector('#date');
