@@ -1,3 +1,91 @@
+const form = document.querySelector('form');
+const nameInput = document.querySelector('#name');
+const dateInput = document.querySelector('#date');
+const presentInput = document.querySelector('#present');
+
+form.addEventListener('submit', function(e) {
+	e.preventDefault();
+	const name = nameInput.value;
+	const date = dateInput.value;
+	const present = presentInput.checked;
+
+	// Write attendance data to file using FileSystem API
+	if (window.File && window.FileReader && window.FileSystem) {
+		const fileSystem = window.FileSystem;
+		fileSystem.root.getFile('Book1.xlsx', { create: true }, function(fileEntry) {
+			fileEntry.createWriter(function(fileWriter) {
+				fileWriter.seek(fileWriter.length); // Move cursor to end of file
+				const blob = new Blob([`${name}\t${date}\t${present}\n`], { type: 'text/plain' });
+				fileWriter.write(blob);
+				alert('Attendance recorded successfully');
+			}, errorHandler);
+		}, errorHandler);
+	} else {
+		alert('Filesystem API not supported');
+	}
+});
+//-----------------------------------------------------------
+function errorHandler(error) {
+	alert('An error occurred: ' + error.message);
+}
+const form = document.querySelector('form');
+const nameInput = document.querySelector('#name');
+const dateInput = document.querySelector('#date');
+const presentInput = document.querySelector('#present');
+const downloadLink = document.querySelector('#download-link');
+
+let attendanceData = [];
+
+form.addEventListener('submit', function(e) {
+	e.preventDefault();
+	const name = nameInput.value;
+	const date = dateInput.value;
+	const present = presentInput.checked;
+
+	// Add attendance data to array
+	attendanceData.push({
+		Name: name,
+		Date: date,
+		Present: present ? 'Yes' : 'No'
+	});
+
+	// Reset form inputs
+	nameInput.value = '';
+	dateInput.value = '';
+	presentInput.checked = false;
+});
+
+downloadLink.addEventListener('click', function(e) {
+	e.preventDefault();
+
+	// Create XLSX file using SheetJS
+	const worksheet = XLSX.utils.json_to_sheet(attendanceData);
+	const workbook = XLSX.utils.book_new();
+	XLSX.utils.book_append_sheet(workbook, worksheet, 'Attendance');
+	const wbout = XLSX.write(workbook, { bookType: 'xlsx', type: 'binary' });
+
+	// Download XLSX file
+	const filename = 'attendance.xlsx';
+	const blob = new Blob([s2ab(wbout)], { type: 'application/octet-stream' });
+	const url = window.URL.createObjectURL(blob);
+	const link = document.createElement('a');
+	link.href = url;
+	link.download = filename;
+	document.body.appendChild(link);
+	link.click();
+	document.body.removeChild(link);
+});
+
+function s2ab(s) {
+	const buf = new ArrayBuffer(s.length);
+	const view = new Uint8Array(buf);
+	for (let i = 0; i < s.length; i++) {
+		view[i] = s.charCodeAt(i) & 0xFF;
+	}
+	return buf;
+}
+
+//--------------------
 // const form = document.querySelector('form');
 // const nameInput = document.querySelector('#name');
 // const dateInput = document.querySelector('#date');
@@ -70,47 +158,48 @@
 // 			alert('Error submitting attendance.');
 // 		});
 // });
-const fs = require('fs');
-const XLSX = require('xlsx');
+//------------------------------------------------------------------------------
+// const fs = require('fs');
+// const XLSX = require('xlsx');
 
-const form = document.querySelector('form');
-const nameInput = document.querySelector('#name');
-const dateInput = document.querySelector('#date');
-const presentInput = document.querySelector('#present');
+// const form = document.querySelector('form');
+// const nameInput = document.querySelector('#name');
+// const dateInput = document.querySelector('#date');
+// const presentInput = document.querySelector('#present');
 
-form.addEventListener('submit', function(e) {
-	e.preventDefault();
-	const name = nameInput.value;
-	const date = dateInput.value;
-	const present = presentInput.checked;
+// form.addEventListener('submit', function(e) {
+// 	e.preventDefault();
+// 	const name = nameInput.value;
+// 	const date = dateInput.value;
+// 	const present = presentInput.checked;
 
-	// Add attendance data to an array
-	const data = [
-		['Name', 'Date', 'Present'],
-		[name, date, present ? 'Yes' : 'No']
-	];
+// 	// Add attendance data to an array
+// 	const data = [
+// 		['Name', 'Date', 'Present'],
+// 		[name, date, present ? 'Yes' : 'No']
+// 	];
 
-	// Create a new Excel workbook
-	const workbook = XLSX.utils.book_new();
+// 	// Create a new Excel workbook
+// 	const workbook = XLSX.utils.book_new();
 
-	// Add the attendance data to a new Excel worksheet
-	const worksheet = XLSX.utils.aoa_to_sheet(data);
-	XLSX.utils.book_append_sheet(workbook, worksheet, 'Attendance');
+// 	// Add the attendance data to a new Excel worksheet
+// 	const worksheet = XLSX.utils.aoa_to_sheet(data);
+// 	XLSX.utils.book_append_sheet(workbook, worksheet, 'Attendance');
 
-	// Convert the workbook to a binary Excel file
-	const excelFile = XLSX.write(workbook, {bookType: 'xlsx', type: 'binary'});
+// 	// Convert the workbook to a binary Excel file
+// 	const excelFile = XLSX.write(workbook, {bookType: 'xlsx', type: 'binary'});
 
-	// Save the binary Excel file to a file path using Node.js file system API
-	const filePath = 'Book1.xlsx';
-	fs.writeFileSync(filePath, s2ab(excelFile));
-});
+// 	// Save the binary Excel file to a file path using Node.js file system API
+// 	const filePath = 'Book1.xlsx';
+// 	fs.writeFileSync(filePath, s2ab(excelFile));
+// });
 
-// Convert a string to an ArrayBuffer
-function s2ab(s) {
-	const buf = new ArrayBuffer(s.length);
-	const view = new Uint8Array(buf);
-	for (let i=0; i<s.length; i++) {
-		view[i] = s.charCodeAt(i) & 0xFF;
-	}
-	return buf;
-}
+// // Convert a string to an ArrayBuffer
+// function s2ab(s) {
+// 	const buf = new ArrayBuffer(s.length);
+// 	const view = new Uint8Array(buf);
+// 	for (let i=0; i<s.length; i++) {
+// 		view[i] = s.charCodeAt(i) & 0xFF;
+// 	}
+// 	return buf;
+// }
