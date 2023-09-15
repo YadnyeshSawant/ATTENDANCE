@@ -1,70 +1,99 @@
-const form = document.querySelector('form');
-const nameInput = document.querySelector('#name');
-const dateInput = document.querySelector('#date');
-const presentInput = document.querySelector('#present');
-const absent = document.querySelector('#present');
-    if(presentInput.checked)
-    {
-        absentInput.disabled = true;
-    }else{
-        absentInput.checked = false;
-    }
+// const form = document.querySelector('form');
+// const nameInput = document.querySelector('#name');
+// const dateInput = document.querySelector('#date');
+// const presentInput = document.querySelector('#present');
 
-const downloadLink = document.querySelector('#download-link');
+// form.addEventListener('submit', function(e) {
+// 	e.preventDefault();
+// 	const name = nameInput.value;
+// 	const date = dateInput.value;
+// 	const present = presentInput.checked;
 
-let attendanceData = [];
+// 	// Send attendance data to Google Spreadsheet
+// 	const url = 'https://script.google.com/macros/s/{YOUR_SCRIPT_ID}/exec'; // Replace {YOUR_SCRIPT_ID} with your Google Script ID
+// 	fetch(`${url}?name=${name}&date=${date}&present=${present}`)
+// 		.then(response => {
+// 			if (response.ok) {
+// 				alert('Attendance submitted successfully!');
+// 			} else {
+// 				alert('Error submitting attendance.');
+// 			}
+// 		})
+// 		.catch(error => {
+// 			console.error(error);
+// 			alert('Error submitting attendance.');
+// 		});
+// });
 
-form.addEventListener('submit', function(e) {
-	e.preventDefault();
-	const name = nameInput.value;
-	const date = dateInput.value;
-	const present = presentInput.checked;
-    const absent = absentInput.checked;
 
-	// Add attendance data to array
-	attendanceData.push({
-		Name: name,
-		Date: date,
-		Present: present ? 'Yes' : 'No',
-        Absent: absent ? 'yes':'No'
-	});
+// const form = document.querySelector('form');
+// const nameInput = document.querySelector('#name');
+// const dateInput = document.querySelector('#date');
+// const presentInput = document.querySelector('#present');
+// const absent = document.querySelector('#present');
+//     if(presentInput.checked)
+//     {
+//         absentInput.disabled = true;
+//     }else{
+//         absentInput.checked = false;
+//     }
 
-	// Reset form inputs
-	nameInput.value = '';
-	dateInput.value = '';
-	presentInput.checked = false;
-    absentInput.checked = false;
-});
+// const downloadLink = document.querySelector('#download-link');
 
-downloadLink.addEventListener('click', function(e) {
-	e.preventDefault();
+// let attendanceData = [];
 
-	// Create XLSX file using SheetJS
-	const worksheet = XLSX.utils.json_to_sheet(attendanceData);
-	const workbook = XLSX.utils.book_new();
-	XLSX.utils.book_append_sheet(workbook, worksheet, 'Attendance');
-	const wbout = XLSX.write(workbook, { bookType: 'xlsx', type: 'binary' });
+// form.addEventListener('submit', function(e) {
+// 	e.preventDefault();
+// 	const name = nameInput.value;
+// 	const date = dateInput.value;
+// 	const present = presentInput.checked;
+//     const absent = absentInput.checked;
 
-	// Download XLSX file
-	const filename = 'Book1.xlsx';
-	const blob = new Blob([s2ab(wbout)], { type: 'application/octet-stream' });
-	const url = window.URL.createObjectURL(blob);
-	const link = document.createElement('a');
-	link.href = url;
-	link.download = filename;
-	document.body.appendChild(link);
-	link.click();
-	document.body.removeChild(link);
-});
+// 	// Add attendance data to array
+// 	attendanceData.push({
+// 		Name: name,
+// 		Date: date,
+// 		Present: present ? 'Yes' : 'No',
+//         Absent: absent ? 'yes':'No'
+// 	});
 
-function s2ab(s) {
-	const buf = new ArrayBuffer(s.length);
-	const view = new Uint8Array(buf);
-	for (let i = 0; i < s.length; i++) {
-		view[i] = s.charCodeAt(i) & 0xFF;
-	}
-	return buf;
-}
+// 	// Reset form inputs
+// 	nameInput.value = '';
+// 	dateInput.value = '';
+// 	presentInput.checked = false;
+//     absentInput.checked = false;
+// });
+
+// downloadLink.addEventListener('click', function(e) {
+// 	e.preventDefault();
+
+// 	// Create XLSX file using SheetJS
+// 	const worksheet = XLSX.utils.json_to_sheet(attendanceData);
+// 	const workbook = XLSX.utils.book_new();
+// 	XLSX.utils.book_append_sheet(workbook, worksheet, 'Attendance');
+// 	const wbout = XLSX.write(workbook, { bookType: 'xlsx', type: 'binary' });
+
+// 	// Download XLSX file
+// 	const filename = 'Book1.xlsx';
+// 	const blob = new Blob([s2ab(wbout)], { type: 'application/octet-stream' });
+// 	const url = window.URL.createObjectURL(blob);
+// 	const link = document.createElement('a');
+// 	link.href = url;
+// 	link.download = filename;
+// 	document.body.appendChild(link);
+// 	link.click();
+// 	document.body.removeChild(link);
+// });
+
+// function s2ab(s) {
+// 	const buf = new ArrayBuffer(s.length);
+// 	const view = new Uint8Array(buf);
+// 	for (let i = 0; i < s.length; i++) {
+// 		view[i] = s.charCodeAt(i) & 0xFF;
+// 	}
+// 	return buf;
+// }
+//---------------------------------------------------------------------------
 // const form = document.querySelector('form');
 // const nameInput = document.querySelector('#name');
 // const dateInput = document.querySelector('#date');
@@ -113,32 +142,6 @@ function s2ab(s) {
 // });
 
 //SECOND ATTEMPT------------------------------------------------------------------------------------------------
-// const form = document.querySelector('form');
-// const nameInput = document.querySelector('#name');
-// const dateInput = document.querySelector('#date');
-// const presentInput = document.querySelector('#present');
-
-// form.addEventListener('submit', function(e) {
-// 	e.preventDefault();
-// 	const name = nameInput.value;
-// 	const date = dateInput.value;
-// 	const present = presentInput.checked;
-
-// 	// Send attendance data to Google Spreadsheet
-// 	const url = 'https://script.google.com/macros/s/{YOUR_SCRIPT_ID}/exec'; // Replace {YOUR_SCRIPT_ID} with your Google Script ID
-// 	fetch(`${url}?name=${name}&date=${date}&present=${present}`)
-// 		.then(response => {
-// 			if (response.ok) {
-// 				alert('Attendance submitted successfully!');
-// 			} else {
-// 				alert('Error submitting attendance.');
-// 			}
-// 		})
-// 		.catch(error => {
-// 			console.error(error);
-// 			alert('Error submitting attendance.');
-// 		});
-// });
 // THIRD ATTEMPT---------------------------------------------------------------------------------------------------------
 // const form = document.querySelector('form');
 // const nameInput = document.querySelector('#name');
